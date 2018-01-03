@@ -1,12 +1,12 @@
 // To run this, execute 'node shuffler.js' in your terminal (tested on node 6.10).
 // Alternatively, you could copy-paste the code up until the line "// End of solution code" and run it in Chrome's dev console.
 
-// First, we'll make a quick function to generate an ordered sequence of ints from to 1 to count, using some nice new ES6 goodness:
+// First up, a function to generate an ordered sequence of ints from to 1 to count, using some nice new ES6 goodness:
 const makeSequence = count => Array.from(new Array(count), (val, index) => index + 1);
 
 // console.log(makeSequence(10)); // uncomment the lines like this if you want to see intermediate checks
 
-// Now let's make a little helper around Math.random() to give us a nice pseudorandom int instead of a float between 0 and 1:
+// Next, a little helper around Math.random() to give us a nice pseudorandom int instead of a float between 0 and 1:
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 // console.log(getRandomInt(1, 10000)); // ran it a few times, seems good
@@ -40,16 +40,20 @@ console.log(generateShuffledNumbers(/*count:*/ 15)); // change the count to 1000
 // End of solution code.
 
 
-// For fun, there's nothing special about shuffling numbers with our shuffle(values) function because it just swaps values around.  We should be able to randomize the ordering of any values, like word strings:
+// For fun, we could try shuffling strings instead of numbers.  It's just positional swaps after all:
 console.log(shuffle(['dog', 'cat', 'elephant', 'mouse', 'lion', 'tiger', 'liger', 'chupacabra']));
 
 // Back to numbers.  Some quick sanity tests (this part needs node.js).
 const assert = require('assert');
 
+// We can sort and then check against the expected sequence to make sure we didn't miss any numbers:
 assert.deepStrictEqual(generateShuffledNumbers(9).sort(), [1, 2, 3, 4, 5, 6, 7, 8, 9], /*error message:*/ 'after sorting we do NOT get back the original sequence!');
 
-// Gauss figured out as a young child that the sum of [1..n] is always n(n+1)/2.  For some reason sum([1..100]) == 5,050 is burned into my brain.
-// Sanity checking the sum of all the numbers doesn't 100% guarantee that the code didn't screw up (for example a generated array of [0,0,0,...,5050] would pass), but if it doesn't pass we know something's up.
+// We can also sanity check that the sum of all the numbers matches what we expect.
+// Gauss figured out as a young child that the sum of [1..n] is always n(n+1)/2.
+// For some reason, the fact that the numbers 1 to 100 sum up to 5,050 is burned into my brain.
+// Note: Sanity checking the sum doesn't 100% guarantee that the code didn't screw up (e.g. [0,0,0,...,5050] would pass).
+// It's not a perfect check, but if it doesn't pass we know something's up.
 const sumItUp = nums => nums.reduce((sum, current) => sum + current);
 assert(sumItUp(generateShuffledNumbers(100)), 5050, /*error message:*/ 'sum does NOT add up to what it should be!');
 
